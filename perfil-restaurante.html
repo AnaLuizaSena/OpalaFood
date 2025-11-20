@@ -1,0 +1,2526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pizzaria do Chiquin - Perfil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="cart-sync.js"></script>
+  <script src="restaurantes-data.js"></script>
+  <style>
+
+:root {
+  --primary: #FF8C42;
+  --primary-hover: #FF7A29;
+  --primary-light: #FFB67D;
+  --secondary: #FFA562;
+  --success: #00A878;
+  --dark: #2E2E2E;
+  --gray: #717171;
+  --light-gray: #F5F5F5;
+  --border: #E8E8E8;
+  --white: #FFFFFF;
+  --accent: #FFAA5C;
+  --rating: #FFB800;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #F8F8F8;
+  color: var(--dark);
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* RESTAURANT HERO */
+.restaurant-hero {
+  position: relative;
+  background: var(--white);
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.hero-image {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  transform: translateY(-60px);
+  margin-bottom: -40px;
+}
+
+.restaurant-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+}
+
+.restaurant-details h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.restaurant-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--gray);
+}
+
+.meta-item i {
+  color: var(--primary);
+}
+
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--success);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.status-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--success);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.restaurant-address {
+  color: var(--gray);
+  font-size: 14px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.restaurant-address:hover {
+  color: var(--primary);
+}
+
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(234, 29, 44, 0.3);
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.btn-secondary:hover {
+  background: var(--light-gray);
+}
+
+/* INFO BADGES */
+.info-badges {
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.info-badge {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: transform 0.2s;
+}
+
+.info-badge:hover {
+  transform: translateY(-4px);
+}
+
+.info-badge i {
+  font-size: 28px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.info-badge strong {
+  display: block;
+  font-size: 14px;
+  color: var(--dark);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.info-badge p {
+  font-size: 13px;
+  color: var(--gray);
+  margin: 0;
+}
+
+.info-badge small {
+  font-size: 12px;
+  color: var(--gray);
+  display: block;
+  margin-top: 4px;
+}
+
+/* NAVIGATION TABS - Estilo Tenda Colorida */
+.nav-tabs {
+  background: white;
+  position: sticky;
+  top: 0px;
+  z-index: 100;
+  margin-bottom: 32px;
+  padding-top: 40px;
+  position: relative;
+}
+
+.nav-tabs::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 40px;
+  background-image: 
+    radial-gradient(circle at 25px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 75px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 125px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 175px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 225px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 275px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 325px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 375px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 425px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 475px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 525px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 575px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 625px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 675px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 725px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 775px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 825px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 875px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 925px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 975px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 1025px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 1075px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 1125px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 1175px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 1225px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 1275px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 1325px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 1375px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 1425px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 1475px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 1525px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 1575px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 1625px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 1675px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 1725px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 1775px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 1825px 0, #FFB67D 25px, transparent 25px),
+    radial-gradient(circle at 1875px 0, #FFD93D 25px, transparent 25px),
+    radial-gradient(circle at 1925px 0, #FF6B6B 25px, transparent 25px),
+    radial-gradient(circle at 1975px 0, #FFB67D 25px, transparent 25px);
+  background-size: 100% 40px;
+  background-repeat: repeat-x;
+  z-index: 1;
+}
+
+.nav-tabs-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;
+  position: relative;
+  background: white;
+  padding-bottom: 0;
+}
+
+.nav-tab {
+  padding: 16px 0;
+  color: var(--gray);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+}
+
+.nav-tab:hover,
+.nav-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+}
+
+/* SECTIONS */
+.section {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.section-header {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 14px;
+  color: var(--gray);
+}
+
+/* OFFERS GRID */
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.offer-card {
+  background: var(--primary);  border-radius: 12px;
+  padding: 24px;
+  color: white;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.offer-card:hover {
+  transform: scale(1.02);
+}
+
+.offer-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.offer-card p {
+  font-size: 14px;
+  opacity: 0.95;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.offer-price {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.offer-price .old-price {
+  font-size: 16px;
+  text-decoration: line-through;
+  opacity: 0.7;
+  margin-right: 8px;
+}
+
+/* INFO GRID */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.info-card {
+  background: var(--light-gray);
+  padding: 24px;
+  border-radius: 12px;
+  border-left: 4px solid var(--primary);
+}
+
+.info-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.info-card p {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.payment-method {
+  background: white;
+  color: var(--dark);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+}
+
+.area-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.area-tag {
+  background: white;
+  color: var(--primary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--primary);
+}
+
+/* RATING SECTION */
+.rating-overview {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  padding: 32px;
+  background: var(--light-gray);
+  border-radius: 12px;
+  margin-bottom: 32px;
+}
+
+.rating-score {
+  text-align: center;
+}
+
+.rating-score .score {
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1;
+}
+
+.rating-score .stars {
+  font-size: 24px;
+  color: #FFB800;
+  margin: 8px 0;
+}
+
+.rating-score .total {
+  font-size: 14px;
+  color: var(--gray);
+}
+
+.rating-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rating-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rating-bar span {
+  font-size: 14px;
+  font-weight: 600;
+  width: 20px;
+}
+
+.bar-container {
+  flex: 1;
+  height: 8px;
+  background: #E0E0E0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: #FFB800;
+  border-radius: 4px;
+}
+
+.bar-count {
+  font-size: 14px;
+  color: var(--gray);
+  width: 40px;
+  text-align: right;
+}
+
+/* COMMENT FORM */
+.comment-form {
+  background: var(--light-gray);
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+}
+
+.comment-form h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--dark);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.star-rating {
+  display: flex;
+  gap: 8px;
+}
+
+.star {
+  font-size: 32px;
+  color: #E0E0E0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.active,
+.star:hover {
+  color: #FFB800;
+}
+
+.submit-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover {
+  background: var(--primary-hover);
+}
+
+/* COMMENTS LIST */
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.comment {
+  padding: 20px;
+  background: var(--light-gray);
+  border-radius: 12px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 8px;
+}
+
+.comment-author {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--dark);
+}
+
+.comment-date {
+  font-size: 13px;
+  color: var(--gray);
+}
+
+.comment-rating {
+  color: #FFB800;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.comment-text {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* MODAL */
+.schedule-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+
+.schedule-modal.show {
+  display: flex;
+}
+
+.schedule-content {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--gray);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.close-modal:hover {
+  background: var(--light-gray);
+}
+
+.schedule-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--dark);
+}
+
+.schedule-day {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.schedule-day:last-child {
+  border-bottom: none;
+}
+
+.day-name {
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.day-hours {
+  color: var(--gray);
+}
+
+/* RESPONSIVE */
+@media (max-width: 968px) {
+  .restaurant-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .restaurant-logo {
+    margin: 0 auto;
+  }
+  
+  .restaurant-meta {
+    justify-content: center;
+  }
+  
+  .cta-buttons {
+    margin: 0 auto;
+    max-width: 300px;
+  }
+  
+  .rating-overview {
+    grid-template-columns: 1fr;
+  }
+  
+ 
+}
+
+@media (max-width: 768px) {
+  header.header {
+    padding: 0 1rem;
+  }
+  
+  .center-menu {
+    display: none;
+  }
+  
+  .profile-info {
+    display: none;
+  }
+  
+  .info-badges {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .offers-grid,
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+header.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 4rem;
+  background: linear-gradient(135deg, #ffffff 0%, #fff8f0 50%, #fff4e6 100%);
+  position: relative;
+  z-index: 1000;
+  border-bottom: 2px solid rgba(249, 115, 22, 0.1);
+  box-shadow: 0 4px 25px rgba(249, 115, 22, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+header.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(249, 115, 22, 0.03) 25%, 
+    rgba(255, 168, 50, 0.03) 50%, 
+    rgba(249, 115, 22, 0.03) 75%, 
+    transparent 100%
+  );
+  z-index: -1;
+  animation: headerGlow 6s ease-in-out infinite;
+}
+
+@keyframes headerGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.logo {
+  position: relative;
+  padding: 8px;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.logo img {
+  width: 100px;
+  height: auto;
+  filter: drop-shadow(0 2px 8px rgba(249, 115, 22, 0.3));
+  transition: all 0.3s ease;
+}
+
+.center-menu {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.menu {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 20px rgba(249, 115, 22, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 10px 18px;
+  border-radius: 25px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.menu li a::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s ease;
+  z-index: -1;
+}
+
+.menu li a:hover::before {
+  width: 120%;
+  height: 150%;
+}
+
+.menu li a:hover {
+  font-weight: 600;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+}
+
+.menu li a.active {
+  color: white;
+  font-weight: 600;
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+}
+
+.menu li a.active::before {
+  width: 120%;
+  height: 150%;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 15% 30%, rgba(249, 115, 22, 0.1) 2px, transparent 2px),
+    radial-gradient(circle at 85% 70%, rgba(255, 168, 50, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 45% 20%, rgba(249, 115, 22, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px, 40px 40px, 80px 80px;
+  animation: float 15s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(0.5deg); }
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  header.header {
+    padding: 1rem 2rem;
+  }
+  
+  .menu {
+    gap: 0.2rem;
+  }
+  
+  .menu li a {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  header.header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 8px;
+  }
+  
+  .menu li a {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu li a span {
+    display: none;
+  }
+  
+  .menu li a {
+    padding: 8px 10px;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+footer.footer {
+  background: linear-gradient(135deg, #fef7ed 0%, #fff8f0 50%, #fefbf7 100%) !important;
+  border-top: 1px solid rgba(249, 115, 22, 0.2) !important;
+  margin-top: 40px !important;
+  padding: 40px 0 30px !important;
+  width: 100% !important;
+  min-height: 180px !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+.footer-content {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 2rem !important;
+  display: grid !important;
+  grid-template-columns: 1.5fr 1fr !important;
+  gap: 60px !important;
+  align-items: start !important;
+  min-height: 120px !important;
+  box-sizing: border-box !important;
+}
+
+.footer-section h3 {
+  color: #f97316;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+.footer-section h3::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #f97316;
+  margin-top: 8px;
+}
+
+.about-section p {
+  color: #6b7280;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  font-size: 15px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 12px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 8px;
+  color: #6b7280;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid #fed7aa;
+  font-size: 16px;
+}
+
+.social-link:hover {
+  color: white;
+  background: #f97316;
+  transform: translateY(-2px);
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.contact-icon {
+  color: #f97316;
+  width: 16px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer-bottom {
+  margin-top: 30px !important;
+  padding-top: 20px !important;
+  border-top: 1px solid rgba(249, 115, 22, 0.2) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  min-height: 40px !important;
+  box-sizing: border-box !important;
+}
+
+.footer-bottom p {
+  color: #9ca3af;
+  margin: 0;
+  font-size: 13px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo img {
+  width: 35px;
+  height: auto;
+}
+
+.footer-logo span {
+  color: #f97316;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 1.5rem;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* User Profile Dropdown */
+.user-profile-dropdown {
+  position: relative;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(249, 115, 22, 0.2);
+}
+
+.profile-trigger:hover {
+  background: white;
+  border-color: #f97316;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.2);
+}
+
+.profile-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f97316, #ff8c42);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profile-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.profile-role {
+  font-size: 11px;
+  color: #666;
+  background: rgba(249, 115, 22, 0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.profile-arrow {
+  color: #999;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.profile-trigger.active .profile-arrow {
+  transform: rotate(180deg);
+}
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  min-width: 280px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  border: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.profile-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.profile-menu-header {
+  padding: 20px;
+  border-bottom: 1px solid #f3f4f6;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(255, 255, 255, 0.9));
+}
+
+.profile-menu-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.profile-menu-email {
+  color: #666;
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.profile-menu-items {
+  padding: 10px;
+}
+
+.profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  color: #666;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.profile-menu-item:hover {
+  background: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+}
+
+.profile-menu-item i {
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.profile-menu-divider {
+  height: 1px;
+  background: #f3f4f6;
+  margin: 10px 15px;
+}
+
+.profile-menu-item.logout {
+  color: #ef4444;
+}
+
+.profile-menu-item.logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .profile-info {
+    display: none;
+  }
+  
+  .profile-trigger {
+    padding: 8px;
+  }
+  
+  .profile-menu {
+    min-width: 250px;
+  }
+}
+
+/* CARRINHO DE COMPRAS */
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid rgba(249, 115, 22, 0.2);
+  transition: all 0.3s ease;
+}
+
+.cart-icon:hover {
+  border-color: #f97316;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
+}
+
+.cart-icon i {
+  font-size: 20px;
+  color: #f97316;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #f97316;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.cart-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  width: 350px;
+  max-height: 500px;
+  overflow-y: auto;
+  display: none;
+  z-index: 10000;
+  border: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.cart-dropdown.show {
+  display: block;
+}
+
+.cart-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.close-cart {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.cart-items {
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.cart-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.cart-item-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #e0e0e0;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.cart-item-size {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.cart-item-price {
+  font-weight: 600;
+  color: #f97316;
+  font-size: 14px;
+}
+
+.cart-item-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.remove-item {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.quantity-btn {
+  background: white;
+  border: 1px solid #e0e0e0;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-btn:hover {
+  background: #f0f0f0;
+}
+
+.quantity-text {
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cart-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.cart-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cart-total-label {
+  color: #1f2937;
+}
+
+.cart-total-value {
+  color: #f97316;
+  font-size: 18px;
+}
+
+.cart-checkout-btn {
+  width: 100%;
+  padding: 12px;
+  background: #f97316;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cart-checkout-btn:hover {
+  background: #ea6a0f;
+}
+
+@media (max-width: 768px) {
+  .cart-dropdown {
+    width: 300px;
+    right: -20px;
+  }
+}
+
+/* MODAL DE CONFIRMAÇÃO */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.modal-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.modal-content {
+  margin: 24px 0;
+}
+
+.modal-info {
+  background: #f9fafb;
+  border-left: 4px solid #f97316;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.modal-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.modal-info-item:last-child {
+  border-bottom: none;
+}
+
+.modal-info-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.modal-info-value {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-btn-primary {
+  background: #f97316;
+  color: white;
+}
+
+.modal-btn-primary:hover {
+  background: #ea6a0f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.modal-btn-secondary {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.modal-btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* MODAL DE SUCESSO */
+.success-modal {
+  text-align: center;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  background: #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 32px;
+  color: white;
+}
+
+.success-message {
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 16px 0;
+}
+
+/* MAPA DO GOOGLE */
+.map-section {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.map-container {
+  width: 100%;
+  height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <img src="logo.png" alt="Logo Opala">
+    </div>
+    
+    <nav class="center-menu">
+      <ul class="menu">
+        <li class="letra"><a href="opala1.html"> Inicial</a></li>
+        <li class="letra"><a href="categorias.html"> Menu</a></li>
+        <li class="letra"><a href="sobrenosversaonova.html"> Sobre nós</a></li>
+        <li class="letra"><a href="estabelecimentos.html" class="active"> Locais</a></li>
+        <li class="letra"><a href="contatenosnovissimo.html"> Contato</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+  <!-- ÍCONE DO CARRINHO -->
+  <div class="cart-icon" id="cartIcon">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="cart-count" id="cartCount">0</span>
+    
+    <!-- DROPDOWN DO CARRINHO -->
+    <div class="cart-dropdown" id="cartDropdown">
+      <div class="cart-header">
+        <h3>Meu Carrinho</h3>
+        <button class="close-cart" onclick="toggleCart()">×</button>
+      </div>
+      
+      <div class="cart-items" id="cartItems">
+        <div class="cart-empty">
+          Seu carrinho está vazio
+        </div>
+      </div>
+      
+      <div class="cart-footer" id="cartFooter" style="display: none;">
+        <div class="cart-total">
+          <span class="cart-total-label">Total:</span>
+          <span class="cart-total-value" id="cartTotal">R$ 0,00</span>
+        </div>
+        <button class="cart-checkout-btn" onclick="finalizarPedidosSeparados()">
+          Finalizar Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+  </header>
+
+<main>
+    <div class="restaurant-hero">
+      <img src="pizzaria1.jpg" alt="Restaurante" class="hero-image">
+      
+      <div class="hero-content">
+        <div class="restaurant-card">
+          <div class="restaurant-details">
+            <h1>Nome do Restaurante</h1>
+            
+            <div class="restaurant-meta">
+              <div class="rating-badge">
+                <i class="fas fa-star"></i>
+                0.0
+              </div>
+              <span class="meta-item">
+                <i class="fas fa-motorcycle"></i>
+                0 min
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                Pedido min. R$ 0,00
+              </span>
+              <span class="status-open">
+                <span class="status-dot"></span>
+                Verificando...
+              </span>
+            </div>
+            
+            <a href="#" target="_blank" class="restaurant-address">
+              <i class="fas fa-map-marker-alt"></i>
+              Carregando endereço...
+            </a>
+          </div>
+          
+          <div class="cta-buttons">
+            <a href="#" class="btn-primary" id="verCardapioBtn">
+              <i class="fas fa-utensils"></i>
+              Ver Cardápio
+            </a>
+            <a href="#" class="btn-secondary">
+              <i class="fas fa-shopping-bag"></i>
+              Fazer Pedido
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="info-badges">
+      <div class="info-badge">
+        <i class="fas fa-motorcycle"></i>
+        <strong>Entrega</strong>
+        <p>-- minutos</p>
+        <small>Taxa: R$ --</small>
+      </div>
+      
+      <div class="info-badge">
+        <i class="fas fa-clock"></i>
+        <strong>Horário</strong>
+        <p>--:-- - --:--</p>
+        <small>--- a ---</small>
+      </div>
+      
+      <div class="info-badge">
+        <i class="fas fa-credit-card"></i>
+        <strong>Pagamento</strong>
+        <p>Carregando...</p>
+      </div>
+    </div>
+  
+    <div class="nav-tabs">
+      <div class="nav-tabs-inner">
+        <a href="#ofertas" class="nav-tab active">Ofertas</a>
+        <a href="#informacoes" class="nav-tab">Informações</a>
+        <a href="#avaliacoes" class="nav-tab">Avaliações</a>
+      </div>
+    </div>
+  
+    <div class="container">
+      <section id="ofertas" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Ofertas Especiais</h2>
+          <p class="section-subtitle">Aproveite nossas promoções exclusivas</p>
+        </div>
+        
+        <div class="offers-grid">
+          <p style="text-align: center; color: #999;">Carregando ofertas...</p>
+        </div>
+      </section>
+  
+      <section id="informacoes" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Informações</h2>
+          <p class="section-subtitle">Tudo que você precisa saber</p>
+        </div>
+        
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Localização</h3>
+            <p><strong>Endereço:</strong><br>Carregando...</p>
+            <a href="#" target="_blank" class="btn-primary">
+              <i class="fas fa-map-marked-alt"></i>
+              Abrir no Maps
+            </a>
+          </div>
+          
+          <div class="info-card">
+            <h3>Horário de Funcionamento</h3>
+            <p><strong>Carregando...</strong><br>--:-- - --:--</p>
+            <button class="btn-secondary" onclick="openScheduleModal()">
+              <i class="fas fa-calendar-alt"></i>
+              Ver Horários
+            </button>
+          </div>
+          
+          <div class="info-card">
+            <h3>Contato</h3>
+            <p><strong>Telefones:</strong><br>Carregando...</p>
+            <a href="#" class="btn-primary">
+              <i class="fab fa-whatsapp"></i>
+              Chamar no WhatsApp
+            </a>
+          </div>
+          
+          <div class="info-card">
+            <h3>Formas de Pagamento</h3>
+            <p>Aceitamos:</p>
+            <div class="payment-methods">
+              <span class="payment-method">Carregando...</span>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <h3>Área de Entrega</h3>
+            <p><strong>Tempo médio:</strong> -- minutos<br>
+            <strong>Taxa de entrega:</strong> R$ --<br>
+            <strong>Pedido mínimo:</strong> R$ --</p>
+            <div class="area-tags">
+              <span class="area-tag">Carregando...</span>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <h3>Especialidades</h3>
+            <p><strong>Nossas especialidades:</strong><br>Carregando...</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section map-section">
+        <div class="section-header">
+          <h2 class="section-title">Localização</h2>
+          <p class="section-subtitle">Encontre-nos no mapa</p>
+        </div>
+        <div class="map-container" id="mapContainer">
+          <p style="text-align: center; padding: 50px; color: #999;">Carregando mapa...</p>
+        </div>
+      </section>
+  
+      <section id="avaliacoes" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Avaliações</h2>
+          <p class="section-subtitle">O que nossos clientes dizem</p>
+        </div>
+        
+        <div class="rating-overview">
+          <div class="rating-score">
+            <div class="score">0.0</div>
+            <div class="stars">★★★★★</div>
+            <div class="total">0 avaliações</div>
+          </div>
+          
+          <div class="rating-bars">
+            <div class="rating-bar">
+              <span>5</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 0%"></div>
+              </div>
+              <div class="bar-count">0</div>
+            </div>
+            <div class="rating-bar">
+              <span>4</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 0%"></div>
+              </div>
+              <div class="bar-count">0</div>
+            </div>
+            <div class="rating-bar">
+              <span>3</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 0%"></div>
+              </div>
+              <div class="bar-count">0</div>
+            </div>
+            <div class="rating-bar">
+              <span>2</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 0%"></div>
+              </div>
+              <div class="bar-count">0</div>
+            </div>
+            <div class="rating-bar">
+              <span>1</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 0%"></div>
+              </div>
+              <div class="bar-count">0</div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="comment-form">
+          <h3>Deixe sua avaliação</h3>
+          <form id="commentForm">
+            <div class="form-group">
+              <label>Sua nota:</label>
+              <div class="star-rating" id="starRating">
+                <span class="star" data-rating="1">★</span>
+                <span class="star" data-rating="2">★</span>
+                <span class="star" data-rating="3">★</span>
+                <span class="star" data-rating="4">★</span>
+                <span class="star" data-rating="5">★</span>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="name">Nome:</label>
+              <input type="text" id="name" placeholder="Digite seu nome" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="comment">Comentário:</label>
+              <textarea id="comment" placeholder="Conte sobre sua experiência..." required></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+              <i class="fas fa-paper-plane"></i>
+              Enviar Avaliação
+            </button>
+          </form>
+        </div>
+  
+        <div class="comments-list" id="commentsList">
+          <div class="comment">
+            <div class="comment-header">
+              <span class="comment-author">Cliente Satisfeito</span>
+              <span class="comment-date">Recente</span>
+            </div>
+            <div class="comment-rating">★★★★★</div>
+            <p class="comment-text">Excelente estabelecimento! Recomendo.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  
+  <div id="scheduleModal" class="schedule-modal">
+    <div class="schedule-content">
+      <button class="close-modal" onclick="closeScheduleModal()">&times;</button>
+      <h2 class="schedule-title">Horário de Funcionamento</h2>
+      <div class="schedule-day">
+        <span class="day-name">Segunda-feira</span>
+        <span class="day-hours">Carregando...</span>
+      </div>
+      <div class="schedule-day">
+        <span class="day-name">Terça-feira</span>
+        <span class="day-hours">Carregando...</span>
+      </div>
+      <div class="schedule-day">
+        <span class="day-name">Quarta-feira</span>
+        <span class="day-hours">Carregando...</span>
+      </div>
+      <div class="schedule-day">
+        <span class="day-name">Quinta-feira</span>
+        <span class="day-hours">Carregando...</span>
+      </div>
+      <div class="schedule-day">
+        <span class="day-name">Sexta-feira</span>
+        <span class="day-hours">Carregando...</span>
+      </div>
+      <div class="schedule-day">
+        <span class="day-name">Sábado</span>
+        <span class="day-hours">Carregando...</span>
+      </div>
+      <div class="schedule-day">
+        <span class="day-name">Domingo</span>
+        <span class="day-hours">Carregando...</span>
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="footer">
+    <div class="footer-content">
+    <div class="footer-section about-section">
+      <h3>Sobre Nós</h3>
+      <p>Oferecemos as melhores experiências gastronômicas com ingredientes frescos e sabores únicos.</p>
+      <div class="footer-social">
+        <a href="#" class="social-link">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://www.instagram.com/opalafood_p2?igsh=dGhrMjl6MzF6eHA2" class="social-link">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="social-link">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="footer-section contact-section">
+      <h3>Contato</h3>
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-phone contact-icon"></i>
+          <span>(86) 9999-999</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope contact-icon"></i>
+          <span>opalafoodp2@gmail.com</span>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-logo">
+        <img src="logo.png" alt="Logo OpalaFood">
+        <span>OpalaFood</span>
+      </div>
+      <p>&copy; 2025 OpalaFood. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+
+    <script>
+// ============================================
+// CARREGAR DADOS DINÂMICOS DO RESTAURANTE
+// ============================================
+
+function carregarDadosRestaurante() {
+  console.log('RESTAURANTES_DATA:', RESTAURANTES_DATA);
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = parseInt(urlParams.get('id'));
+  
+  console.log('ID da URL:', id);
+  console.log('Dados do restaurante:', RESTAURANTES_DATA[id]);
+
+  if (!id || !RESTAURANTES_DATA[id]) {
+    alert('Restaurante não encontrado!');
+    window.location.href = 'estabelecimentos.html';
+    return;
+  }
+
+  const rest = RESTAURANTES_DATA[id];
+  
+  // ATUALIZAR IMAGEM HERO
+  document.querySelector('.hero-image').src = rest.imagem;
+
+  // ATUALIZAR NOME E TITLE
+  document.querySelector('.restaurant-details h1').textContent = rest.nome;
+  document.title = `${rest.nome} - Perfil | OpalaFood`;
+
+  // ATUALIZAR RATING
+  document.querySelector('.rating-badge').innerHTML = `
+    <i class="fas fa-star"></i>
+    ${rest.rating.toFixed(1)}
+  `;
+
+  // ATUALIZAR TEMPO E PEDIDO MÍNIMO
+  const metaItems = document.querySelectorAll('.meta-item');
+  metaItems[0].innerHTML = `
+    <i class="fas fa-motorcycle"></i>
+    ${rest.tempoEntrega} min
+  `;
+  metaItems[1].innerHTML = `
+    <i class="fas fa-dollar-sign"></i>
+    Pedido min. R$ ${rest.pedidoMinimo.toFixed(2)}
+  `;
+
+  // VERIFICAR SE ESTÁ ABERTO
+  const statusOpen = document.querySelector('.status-open');
+  const agora = new Date();
+  const horaAtual = agora.getHours();
+  const minutoAtual = agora.getMinutes();
+  const diaAtual = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'][agora.getDay()];
+  
+  const horaAbertura = rest.horarioAberturaHora * 60 + rest.horarioAberturaMin;
+  const horaFechamento = rest.horarioFechamentoHora * 60 + rest.horarioFechamentoMin;
+  const horaAtualMin = horaAtual * 60 + minutoAtual;
+  
+  const estaAberto = rest.diasFuncionamento.includes(diaAtual) && 
+                     horaAtualMin >= horaAbertura && 
+                     horaAtualMin <= horaFechamento;
+  
+  if (estaAberto) {
+    statusOpen.innerHTML = `
+      <span class="status-dot"></span>
+      Aberto agora
+    `;
+    statusOpen.style.color = 'var(--success)';
+  } else {
+    statusOpen.innerHTML = `
+      <span class="status-dot" style="background: #ef4444;"></span>
+      Fechado
+    `;
+    statusOpen.style.color = '#ef4444';
+  }
+
+  // ATUALIZAR ENDEREÇO
+  const enderecoLink = document.querySelector('.restaurant-address');
+  const enderecoCompleto = `${rest.endereco}, ${rest.bairro}, ${rest.cidade} - ${rest.estado}`;
+  enderecoLink.innerHTML = `
+    <i class="fas fa-map-marker-alt"></i>
+    ${enderecoCompleto}
+  `;
+  enderecoLink.href = `https://maps.google.com/?q=${encodeURIComponent(enderecoCompleto)}`;
+
+  // FORMATAR HORÁRIO
+  const horaAbre = String(rest.horarioAberturaHora).padStart(2, '0');
+  const minAbre = String(rest.horarioAberturaMin).padStart(2, '0');
+  const horaFecha = String(rest.horarioFechamentoHora).padStart(2, '0');
+  const minFecha = String(rest.horarioFechamentoMin).padStart(2, '0');
+  const horarioCompleto = `${horaAbre}:${minAbre} - ${horaFecha}:${minFecha}`;
+
+  // ATUALIZAR INFO BADGES
+  const infoBadges = document.querySelectorAll('.info-badge');
+  
+  infoBadges[0].innerHTML = `
+    <i class="fas fa-motorcycle"></i>
+    <strong>Entrega</strong>
+    <p>${rest.tempoEntrega} minutos</p>
+    <small>Taxa: R$ ${rest.taxaEntrega.toFixed(2)}</small>
+  `;
+
+  infoBadges[1].innerHTML = `
+    <i class="fas fa-clock"></i>
+    <strong>Horário</strong>
+    <p>${horarioCompleto}</p>
+    <small>${rest.diasFuncionamento[0].substring(0,3)} a ${rest.diasFuncionamento[rest.diasFuncionamento.length - 1].substring(0,3)}</small>
+  `;
+
+  infoBadges[2].innerHTML = `
+    <i class="fas fa-credit-card"></i>
+    <strong>Pagamento</strong>
+    <p>${rest.formasPagamento.slice(0,3).join(', ')}</p>
+    <small>${rest.formasPagamento.length > 3 ? 'E mais...' : 'Todas as formas'}</small>
+  `;
+
+  // ATUALIZAR SEÇÃO DE INFORMAÇÕES
+  const infoCards = document.querySelectorAll('.info-card');
+  
+  // Localização
+  infoCards[0].querySelector('p').innerHTML = `
+    <strong>Endereço:</strong><br>
+    ${rest.endereco}<br>
+    ${rest.bairro} - ${rest.cidade}, ${rest.estado}<br>
+    CEP: ${rest.cep}
+  `;
+  infoCards[0].querySelector('a').href = `https://maps.google.com/?q=${encodeURIComponent(enderecoCompleto)}`;
+
+  // Horário
+  infoCards[1].querySelector('p').innerHTML = `
+    <strong>${rest.diasFuncionamento[0]} a ${rest.diasFuncionamento[rest.diasFuncionamento.length - 1]}</strong><br>
+    ${horarioCompleto}<br>
+    <em>${estaAberto ? 'Aberto agora' : 'Fechado no momento'}</em>
+  `;
+
+  // Contato
+  infoCards[2].querySelector('p').innerHTML = `
+    <strong>Telefones:</strong><br>
+    WhatsApp: ${rest.telefone}<br>
+    ${rest.telefoneFixo ? `Fixo: ${rest.telefoneFixo}` : ''}
+  `;
+  const whatsappNum = rest.whatsapp.replace(/\D/g, '');
+  infoCards[2].querySelector('a').href = `https://wa.me/55${whatsappNum}`;
+
+  // Formas de Pagamento
+  const paymentMethodsContainer = infoCards[3].querySelector('.payment-methods');
+  paymentMethodsContainer.innerHTML = rest.formasPagamento.map(forma => 
+    `<span class="payment-method">${forma}</span>`
+  ).join('');
+
+  // Área de Entrega
+  infoCards[4].querySelector('p').innerHTML = `
+    <strong>Tempo médio:</strong> ${rest.tempoEntrega} minutos<br>
+    <strong>Taxa de entrega:</strong> R$ ${rest.taxaEntrega.toFixed(2)}<br>
+    <strong>Pedido mínimo:</strong> R$ ${rest.pedidoMinimo.toFixed(2)}
+  `;
+  
+  const areaTagsContainer = infoCards[4].querySelector('.area-tags');
+  areaTagsContainer.innerHTML = rest.bairrosEntrega.map(bairro => 
+    `<span class="area-tag">${bairro}</span>`
+  ).join('');
+
+  // Especialidades
+  if (rest.especialidades && rest.especialidades.length > 0) {
+    infoCards[5].querySelector('p').innerHTML = `
+      <strong>Nossas especialidades:</strong><br>
+      ${rest.especialidades.join('<br>')}
+    `;
+  }
+
+  // ATUALIZAR AVALIAÇÕES
+  document.querySelector('.rating-score .score').textContent = rest.rating.toFixed(1);
+  document.querySelector('.rating-score .total').textContent = `${rest.totalAvaliacoes} avaliações`;
+
+  // Calcular distribuição de estrelas (estimativa proporcional)
+  const ratingBars = document.querySelectorAll('.rating-bar');
+  const distribuicao = calcularDistribuicaoEstrelas(rest.rating, rest.totalAvaliacoes);
+  
+  ratingBars.forEach((bar, index) => {
+    const estrela = 5 - index;
+    const porcentagem = (distribuicao[estrela] / rest.totalAvaliacoes) * 100;
+    bar.querySelector('.bar-fill').style.width = `${porcentagem}%`;
+    bar.querySelector('.bar-count').textContent = distribuicao[estrela];
+  });
+
+  // ATUALIZAR OFERTAS
+  const offersGrid = document.querySelector('.offers-grid');
+  if (rest.ofertas && rest.ofertas.length > 0) {
+    const ofertasAtivas = rest.ofertas.filter(oferta => oferta.ativo);
+    if (ofertasAtivas.length > 0) {
+      offersGrid.innerHTML = ofertasAtivas.map(oferta => `
+        <div class="offer-card">
+          <h3>${oferta.nome}</h3>
+          <p>${oferta.descricao}</p>
+          <div class="offer-price">
+            <span class="old-price">R$ ${oferta.precoOriginal.toFixed(2)}</span>
+            R$ ${oferta.precoPromocao.toFixed(2)}
+          </div>
+        </div>
+      `).join('');
+    } else {
+      document.querySelector('#ofertas').style.display = 'none';
+    }
+  } else {
+    document.querySelector('#ofertas').style.display = 'none';
+  }
+
+  // ATUALIZAR MAPA
+  const mapContainer = document.getElementById('mapContainer');
+  mapContainer.innerHTML = `
+    <iframe
+      src="https://maps.google.com/maps?q=${encodeURIComponent(enderecoCompleto)}&t=&z=16&ie=UTF8&iwloc=&output=embed"
+      allowfullscreen
+      loading="lazy">
+    </iframe>
+  `;
+
+  // ATUALIZAR MODAL DE HORÁRIOS
+  const scheduleContent = document.querySelector('#scheduleModal .schedule-content');
+  const diasSemana = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo'];
+  
+  const horariosDias = diasSemana.map(dia => {
+    const diaAbreviado = dia.split('-')[0];
+    const funciona = rest.diasFuncionamento.includes(diaAbreviado);
+    return `
+      <div class="schedule-day">
+        <span class="day-name">${dia}</span>
+        <span class="day-hours" style="${!funciona ? 'color: #ef4444;' : ''}">${funciona ? horarioCompleto : 'Fechado'}</span>
+      </div>
+    `;
+  }).join('');
+  
+  scheduleContent.innerHTML = `
+    <button class="close-modal" onclick="closeScheduleModal()">&times;</button>
+    <h2 class="schedule-title">Horário de Funcionamento</h2>
+    ${horariosDias}
+  `;
+
+  // ATUALIZAR BOTÕES
+  const btnCardapio = document.getElementById('verCardapioBtn');
+  if (btnCardapio) {
+    btnCardapio.href = `cardapio.html?id=${id}`;
+  }
+
+  const btnPedido = document.querySelector('.btn-secondary[href*="pedido"]');
+  if (btnPedido) {
+    btnPedido.href = `cardapio.html?id=${id}`;
+  }
+}
+
+function calcularDistribuicaoEstrelas(rating, total) {
+  const distribuicao = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0};
+  
+  if (rating >= 4.5) {
+    distribuicao[5] = Math.round(total * 0.75);
+    distribuicao[4] = Math.round(total * 0.15);
+    distribuicao[3] = Math.round(total * 0.07);
+    distribuicao[2] = Math.round(total * 0.02);
+    distribuicao[1] = total - (distribuicao[5] + distribuicao[4] + distribuicao[3] + distribuicao[2]);
+  } else if (rating >= 4.0) {
+    distribuicao[5] = Math.round(total * 0.60);
+    distribuicao[4] = Math.round(total * 0.25);
+    distribuicao[3] = Math.round(total * 0.10);
+    distribuicao[2] = Math.round(total * 0.03);
+    distribuicao[1] = total - (distribuicao[5] + distribuicao[4] + distribuicao[3] + distribuicao[2]);
+  } else if (rating >= 3.5) {
+    distribuicao[5] = Math.round(total * 0.40);
+    distribuicao[4] = Math.round(total * 0.35);
+    distribuicao[3] = Math.round(total * 0.15);
+    distribuicao[2] = Math.round(total * 0.07);
+    distribuicao[1] = total - (distribuicao[5] + distribuicao[4] + distribuicao[3] + distribuicao[2]);
+  } else {
+    distribuicao[5] = Math.round(total * 0.25);
+    distribuicao[4] = Math.round(total * 0.30);
+    distribuicao[3] = Math.round(total * 0.25);
+    distribuicao[2] = Math.round(total * 0.15);
+    distribuicao[1] = total - (distribuicao[5] + distribuicao[4] + distribuicao[3] + distribuicao[2]);
+  }
+  
+  return distribuicao;
+}
+
+// ============================================
+// SISTEMA DE AVALIAÇÕES
+// ============================================
+let currentRating = 0;
+
+document.addEventListener('DOMContentLoaded', function() {
+  // CARREGAR DADOS DO RESTAURANTE
+  carregarDadosRestaurante();
+
+  // SISTEMA DE ESTRELAS
+  document.querySelectorAll('.star').forEach(star => {
+    star.addEventListener('click', function() {
+      currentRating = parseInt(this.dataset.rating);
+      updateStars();
+    });
+
+    star.addEventListener('mouseover', function() {
+      const rating = parseInt(this.dataset.rating);
+      highlightStars(rating);
+    });
+  });
+
+  document.getElementById('starRating').addEventListener('mouseleave', function() {
+    updateStars();
+  });
+
+  // ENVIO DE AVALIAÇÃO
+  document.getElementById('commentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    if (currentRating === 0) {
+      alert('⭐ Por favor, selecione uma avaliação!');
+      return;
+    }
+
+    const name = document.getElementById('name').value;
+    const comment = document.getElementById('comment').value;
+
+    const newComment = document.createElement('div');
+    newComment.className = 'comment';
+    newComment.innerHTML = `
+      <div class="comment-header">
+        <span class="comment-author">${name}</span>
+        <span class="comment-date">Agora</span>
+      </div>
+      <div class="comment-rating">${'★'.repeat(currentRating)}${'☆'.repeat(5-currentRating)}</div>
+      <p class="comment-text">${comment}</p>
+    `;
+
+    const commentsList = document.getElementById('commentsList');
+    commentsList.insertBefore(newComment, commentsList.firstChild);
+
+    // LIMPAR FORMULÁRIO
+    document.getElementById('name').value = '';
+    document.getElementById('comment').value = '';
+    currentRating = 0;
+    updateStars();
+
+    alert('✅ Avaliação enviada com sucesso!');
+  });
+});
+
+function updateStars() {
+  document.querySelectorAll('.star').forEach((star, index) => {
+    if (index < currentRating) {
+      star.classList.add('active');
+    } else {
+      star.classList.remove('active');
+    }
+  });
+}
+
+function highlightStars(rating) {
+  document.querySelectorAll('.star').forEach((star, index) => {
+    if (index < rating) {
+      star.classList.add('active');
+    } else {
+      star.classList.remove('active');
+    }
+  });
+}
+
+// ============================================
+// MODAL DE HORÁRIOS
+// ============================================
+function openScheduleModal() {
+  document.getElementById('scheduleModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeScheduleModal() {
+  document.getElementById('scheduleModal').classList.remove('show');
+  document.body.style.overflow = 'auto';
+}
+
+window.onclick = function(event) {
+  const modal = document.getElementById('scheduleModal');
+  if (event.target == modal) {
+    closeScheduleModal();
+  }
+}
+
+// ============================================
+// ALERTA DE SAÍDA PARA REDES SOCIAIS
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+  const socialLinks = document.querySelectorAll('.footer-social a, .social-links a');
+
+  socialLinks.forEach(link => {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+      const url = this.href;
+      const icone = this.querySelector('i') ? this.querySelector('i').classList.value : '';
+
+      if (icone.includes('fa-whatsapp')) {
+        alert("❌ O WhatsApp está indisponível no momento.");
+        return;
+      }
+
+      if (!url || url === '#') return;
+
+      const confirmacao = confirm("⚠️ Você está prestes a sair do OpalaFood. Deseja continuar?");
+      if (confirmacao) {
+        window.open(url, '_blank');
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

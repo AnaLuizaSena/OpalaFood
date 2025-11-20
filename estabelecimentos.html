@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Locais</title> 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="cart-sync.js"></script>
+  <script src="restaurantes-data.js"></script>
+<style>
+  * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+    overflow-x: hidden;
+
+}
+
+.letra {
+  color: #f97316;
+  transform: 2s;
+}
+
+.letra:hover {
+  font-weight: bold;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.back-button {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menu {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.menu a {
+  margin: 0 1rem;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  
+}
+
+.menu a.active {
+  color: #ff6600;
+  font-weight: 600;
+}
+
+.search {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+
+
+.menu-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin: 3rem 0 2rem 0;
+  font-weight: 600;
+  color: #d35400;
+  text-align: left;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 40px;
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  border-radius: 2px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 0 2rem 2rem 2rem;
+}
+
+ 
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(249, 115, 22, 0.1);
+  height: 320px;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 30px rgba(249, 115, 22, 0.25);
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-info {
+  padding: 1.2rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.rating {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #f97316;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+
+.card-info h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.card-info p {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.btn {
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn:hover{
+  background: linear-gradient(135deg, #ff6b35, #ff4500);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::-webkit-scrollbar{
+  width: 12px;
+  background-color: #fff6cc;
+}
+::-webkit-scrollbar-track{
+  border-radius: 3px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb{
+  border-radius: 5px;
+  background-color: #f3b94c;
+  border:2px solid #eff1f5
+}
+
+.unified-auth-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f97316, #ff8c42);
+  color: white;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+  border: 2px solid transparent;
+}
+
+.unified-auth-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: linear-gradient(135deg, #ff6b35, #ff4500);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.unified-auth-btn:hover::before {
+  width: 120%;
+  height: 150%;
+}
+
+.unified-auth-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 30px rgba(249, 115, 22, 0.6);
+  background: linear-gradient(135deg, #ff6b35, #ff4500);
+}
+
+.unified-auth-btn {
+  animation: softGlow 2s ease-in-out infinite;
+}
+
+@keyframes softGlow {
+  0%, 100% { 
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+  }
+  50% { 
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.6);
+  }
+}
+
+header.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 4rem;
+  background: linear-gradient(135deg, #ffffff 0%, #fff8f0 50%, #fff4e6 100%);
+  position: relative;
+  z-index: 1000;
+  border-bottom: 2px solid rgba(249, 115, 22, 0.1);
+  box-shadow: 0 4px 25px rgba(249, 115, 22, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+header.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(249, 115, 22, 0.03) 25%, 
+    rgba(255, 168, 50, 0.03) 50%, 
+    rgba(249, 115, 22, 0.03) 75%, 
+    transparent 100%
+  );
+  z-index: -1;
+  animation: headerGlow 6s ease-in-out infinite;
+}
+
+@keyframes headerGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+
+.logo {
+  position: relative;
+  padding: 8px;
+  border-radius: 15px;
+  
+  transition: all 0.3s ease;
+  
+}
+
+
+
+.logo img {
+  width: 100px;
+  height: auto;
+  filter: drop-shadow(0 2px 8px rgba(249, 115, 22, 0.3));
+  transition: all 0.3s ease;
+}
+
+
+.center-menu {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.menu {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 20px rgba(249, 115, 22, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 10px 18px;
+  border-radius: 25px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.menu li a::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s ease;
+  z-index: -1;
+}
+
+.menu li a:hover::before {
+  width: 120%;
+  height: 150%;
+}
+
+.menu li a:hover {
+  font-weight: 600;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+}
+
+.menu li a.active {
+  color: white;
+  font-weight: 600;
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+}
+
+.menu li a.active::before {
+  width: 120%;
+  height: 150%;
+}
+
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+
+
+
+
+.header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 15% 30%, rgba(249, 115, 22, 0.1) 2px, transparent 2px),
+    radial-gradient(circle at 85% 70%, rgba(255, 168, 50, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 45% 20%, rgba(249, 115, 22, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px, 40px 40px, 80px 80px;
+  animation: float 15s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(0.5deg); }
+}
+
+@media (max-width: 1024px) {
+  header.header {
+    padding: 1rem 2rem;
+  }
+  
+  .menu {
+    gap: 0.2rem;
+  }
+  
+  .menu li a {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  
+  .header-actions {
+    gap: 8px;
+  }
+  
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .main-content {
+    padding: 0 1rem;
+  }
+
+}
+
+@media (max-width: 768px) {
+  header.header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 8px;
+  }
+  
+  .menu li a {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .header-actions {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    padding: 0 1rem 2rem 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+    padding-left: 1rem;
+    margin: 2rem 0 1.5rem 0;
+  }
+  
+  .category-section {
+    margin: 1rem;
+    padding: 1rem 0;
+  }
+  
+  .card {
+    height: 300px;
+  }
+  
+  .card img {
+    height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu li a span {
+    display: none;
+  }
+  
+  .menu li a {
+    padding: 8px 10px;
+  }
+
+  .grid-container {
+    grid-template-columns: 1fr;
+    padding: 0 0.5rem 2rem 0.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.6rem;
+    text-align: center;
+    padding-left: 0;
+  }
+  
+  .section-title::before {
+    display: none;
+  }
+}
+
+
+/* Modificação no header existente para acomodar o perfil */
+header.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem; /* Reduzido para dar espaço ao perfil */
+    /* ... resto dos estilos existentes ... */
+}
+
+.filter-container {
+  padding: 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #fff8f0 50%, #fff4e6 100%);
+  border-bottom: 2px solid rgba(249, 115, 22, 0.1);
+  box-shadow: 0 4px 25px rgba(249, 115, 22, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  backdrop-filter: blur(10px);
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filter-btn {
+  padding: 12px 24px;
+  border: 2px solid rgba(249, 115, 22, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+  color: #666;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.filter-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s ease;
+  z-index: -1;
+}
+
+.filter-btn:hover::before {
+  width: 120%;
+  height: 150%;
+}
+
+.filter-btn:hover {
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  color: white;
+  border-color: #f97316;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+}
+
+.filter-btn.active::before {
+  width: 120%;
+  height: 150%;
+}
+
+/* Ocultar seções */
+.category-section[style*="display: none"] {
+  display: none !important;
+}
+
+/* Responsividade dos filtros */
+@media (max-width: 768px) {
+  .filter-container {
+    padding: 1rem;
+  }
+  
+  .filter-buttons {
+    gap: 0.5rem;
+  }
+  
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
+
+.category-section {
+  position: relative;
+  margin-bottom: 4rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  margin: 2rem;
+  padding: 2rem 0;
+}
+
+.category-section:nth-child(even) {
+  background: rgba(255, 248, 240, 0.3);
+}
+
+.fade-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.7) 40%, rgba(255, 255, 255, 1) 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.show-more-btn {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+  pointer-events: all;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.show-more-btn:hover {
+  transform: translateX(-50%) translateY(-4px);
+  box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
+  background: linear-gradient(135deg, #ff6b35, #ff4500);
+}
+
+.grid-container.preview {
+  max-height: 700px;
+  overflow: hidden;
+}
+
+.grid-container.full {
+  max-height: none;
+}
+
+.category-section.expanded .fade-overlay,
+.category-section.expanded .show-more-btn {
+  display: none;
+}
+
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+footer.footer {
+  background: linear-gradient(135deg, #fef7ed 0%, #fff8f0 50%, #fefbf7 100%) !important;
+  border-top: 1px solid rgba(249, 115, 22, 0.2) !important;
+  margin-top: 40px !important;
+  padding: 40px 0 30px !important;
+  width: 100% !important;
+  min-height: 180px !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+.footer-content {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 2rem !important;
+  display: grid !important;
+  grid-template-columns: 1.5fr 1fr !important;
+  gap: 60px !important;
+  align-items: start !important;
+  min-height: 120px !important;
+  box-sizing: border-box !important;
+}
+
+.footer-section h3 {
+  color: #f97316;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+.footer-section h3::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: #f97316;
+  margin-top: 8px;
+}
+
+.about-section p {
+  color: #6b7280;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  font-size: 15px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 12px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #ffffff;
+  border-radius: 8px;
+  color: #6b7280;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid #fed7aa;
+  font-size: 16px;
+}
+
+.social-link:hover {
+  color: white;
+  background: #f97316;
+  transform: translateY(-2px);
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.contact-icon {
+  color: #f97316;
+  width: 16px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer-bottom {
+  margin-top: 30px !important;
+  padding-top: 20px !important;
+  border-top: 1px solid rgba(249, 115, 22, 0.2) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  min-height: 40px !important;
+  box-sizing: border-box !important;
+}
+
+.footer-bottom p {
+  color: #9ca3af;
+  margin: 0;
+  font-size: 13px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo img {
+  width: 35px;
+  height: auto;
+}
+
+.footer-logo span {
+  color: #f97316;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 1.5rem;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* User Profile Dropdown */
+.user-profile-dropdown {
+  position: relative;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(249, 115, 22, 0.2);
+}
+
+.profile-trigger:hover {
+  background: white;
+  border-color: #f97316;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.2);
+}
+
+.profile-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f97316, #ff8c42);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profile-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.profile-role {
+  font-size: 11px;
+  color: #666;
+  background: rgba(249, 115, 22, 0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.profile-arrow {
+  color: #999;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.profile-trigger.active .profile-arrow {
+  transform: rotate(180deg);
+}
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  min-width: 280px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  border: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.profile-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.profile-menu-header {
+  padding: 20px;
+  border-bottom: 1px solid #f3f4f6;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(255, 255, 255, 0.9));
+}
+
+.profile-menu-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.profile-menu-email {
+  color: #666;
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.profile-menu-items {
+  padding: 10px;
+}
+
+.profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  color: #666;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.profile-menu-item:hover {
+  background: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+}
+
+.profile-menu-item i {
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.profile-menu-divider {
+  height: 1px;
+  background: #f3f4f6;
+  margin: 10px 15px;
+}
+
+.profile-menu-item.logout {
+  color: #ef4444;
+}
+
+.profile-menu-item.logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .profile-info {
+    display: none;
+  }
+  
+  .profile-trigger {
+    padding: 8px;
+  }
+  
+  .profile-menu {
+    min-width: 250px;
+  }
+}
+
+/* CARRINHO DE COMPRAS */
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid rgba(249, 115, 22, 0.2);
+  transition: all 0.3s ease;
+}
+
+.cart-icon:hover {
+  border-color: #f97316;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
+}
+
+.cart-icon i {
+  font-size: 20px;
+  color: #f97316;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #f97316;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.cart-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  width: 350px;
+  max-height: 500px;
+  overflow-y: auto;
+  display: none;
+  z-index: 10000;
+  border: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.cart-dropdown.show {
+  display: block;
+}
+
+.cart-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.close-cart {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.cart-items {
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.cart-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.cart-item-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #e0e0e0;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.cart-item-size {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.cart-item-price {
+  font-weight: 600;
+  color: #f97316;
+  font-size: 14px;
+}
+
+.cart-item-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.remove-item {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.quantity-btn {
+  background: white;
+  border: 1px solid #e0e0e0;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-btn:hover {
+  background: #f0f0f0;
+}
+
+.quantity-text {
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cart-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.cart-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cart-total-label {
+  color: #1f2937;
+}
+
+.cart-total-value {
+  color: #f97316;
+  font-size: 18px;
+}
+
+.cart-checkout-btn {
+  width: 100%;
+  padding: 12px;
+  background: #f97316;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cart-checkout-btn:hover {
+  background: #ea6a0f;
+}
+
+@media (max-width: 768px) {
+  .cart-dropdown {
+    width: 300px;
+    right: -20px;
+  }
+}
+
+/* MODAL DE CONFIRMAÇÃO */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.modal-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.modal-content {
+  margin: 24px 0;
+}
+
+.modal-info {
+  background: #f9fafb;
+  border-left: 4px solid #f97316;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.modal-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.modal-info-item:last-child {
+  border-bottom: none;
+}
+
+.modal-info-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.modal-info-value {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-btn-primary {
+  background: #f97316;
+  color: white;
+}
+
+.modal-btn-primary:hover {
+  background: #ea6a0f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.modal-btn-secondary {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.modal-btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* MODAL DE SUCESSO */
+.success-modal {
+  text-align: center;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  background: #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 32px;
+  color: white;
+}
+
+.success-message {
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 16px 0;
+}
+</style>
+</head>
+<body>
+  
+  <header class="header">
+    <div class="logo">
+      <img src="logo.png" alt="Logo Opala">
+    </div>
+    
+    <nav class="center-menu">
+      <ul class="menu">
+        <li class="letra"><a href="opala1.html"> Inicial</a></li>
+        <li class="letra"><a href="categorias.html"> Menu</a></li>
+        <li class="letra"><a href="sobrenosversaonova.html"> Sobre nós</a></li>
+        <li class="letra"><a href="estabelecimentos.html" class="active"> Locais</a></li>
+        <li class="letra"><a href="contatenosnovissimo.html"> Contato</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+  <!-- ÍCONE DO CARRINHO -->
+  <div class="cart-icon" id="cartIcon">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="cart-count" id="cartCount">0</span>
+    
+    <!-- DROPDOWN DO CARRINHO -->
+    <div class="cart-dropdown" id="cartDropdown">
+      <div class="cart-header">
+        <h3>Meu Carrinho</h3>
+        <button class="close-cart" onclick="toggleCart()">×</button>
+      </div>
+      
+      <div class="cart-items" id="cartItems">
+        <div class="cart-empty">
+          Seu carrinho está vazio
+        </div>
+      </div>
+      
+      <div class="cart-footer" id="cartFooter" style="display: none;">
+        <div class="cart-total">
+          <span class="cart-total-label">Total:</span>
+          <span class="cart-total-value" id="cartTotal">R$ 0,00</span>
+        </div>
+        <button class="cart-checkout-btn" onclick="finalizarPedidosSeparados()">
+          Finalizar Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+  </header>
+  
+
+<div class="filter-container">
+  <div class="filter-buttons">
+    <button class="filter-btn active" data-category="all">Todos</button>
+    <button class="filter-btn" data-category="pizzarias">Pizzarias</button>
+    <button class="filter-btn" data-category="lanchonetes">Lanchonetes</button>
+    <button class="filter-btn" data-category="sorveterias">Sorveterias</button>
+    <button class="filter-btn" data-category="docerias">Docerias</button>
+    <button class="filter-btn" data-category="frutosdomar">Frutos do Mar</button>
+    <button class="filter-btn" data-category="comidajaponesa">Comida Japonesa</button>
+    <button class="filter-btn" data-category="restaurantes">Restaurantes</button>
+    <button class="filter-btn" data-category="churrascarias">Churrascarias</button>
+  </div>
+</div>
+
+<br>
+<div class="category-section" data-category="pizzarias">
+  <main class="main-content" data-category="pizzarias">
+    <h1 class="section-title" id="pizzarias">Pizzarias</h1>
+    <div class="grid-container preview">
+      
+      <div class="card">
+        <img src="pizzaria1.jpg" alt="Pizzaria 1" />
+        <div class="card-info">
+          <div class="rating">⭐ 5.00</div>
+          <h2 class="nome">Pizzas do Chiquin</h2>
+          <p class="descricao">Pizzaria aberta de segunda a sexta</p>
+          
+          <button class="btn" onclick="irParaPerfil(1)">Conferir</button>
+         
+        </div>
+      </div>    
+    </div>
+    <div class="fade-overlay"></div>
+    <button class="show-more-btn" data-category="pizzarias">Ver todos</button>
+  </main>
+</div>
+
+<div class="category-section" data-category="lanchonetes">
+  <main class="main-content" data-category="lanchonetes">
+    <h1 class="section-title" id="lanchonetes">Lanchonetes</h1>
+    <div class="grid-container preview">
+      
+      <div class="card">
+        <img src="lanchonete 1.jpeg" alt="Lanchonete 1" />
+        <div class="card-info">
+          <div class="rating">⭐ 5.00</div>
+          <h2 class="nome">Kombi Burguer</h2>
+          <p class="descricao">Lanchonete aberta todos os dias</p>
+          <button class="btn" onclick="irParaPerfil(3)">Conferir</button>
+        </div>
+      </div>
+    </div>
+    <div class="fade-overlay"></div>
+    <button class="show-more-btn" data-category="lanchonetes">Ver todos</button>
+  </main>
+</div>
+    
+
+
+
+
+<div class="category-section" data-category="sorveterias">
+  <main class="main-content" data-category="sorveterias">
+    <h1 class="section-title" id="sorveterias">Sorveterias</h1>
+    <div class="grid-container preview">
+      <div class="card">
+        <img src="sorvete1.jpeg" alt="sorveteria 1" />
+        <div class="card-info">
+          <div class="rating">⭐ 5.00</div>
+          <h2 class="nome">Ice Dreams </h2>
+          <p class="descricao">Pizzaria aberta de segunda a sexta</p>
+          <button class="btn" onclick="irParaPerfil(23)">Conferir</button>
+        </div>
+      </div>
+    </div>
+    <div class="fade-overlay"></div>
+    <button class="show-more-btn" data-category="sorveterias">Ver todos</button>
+  </main>
+</div>
+  
+  
+<div class="category-section" data-category="docerias">
+  <main class="main-content" data-category="docerias">
+    <h1 class="section-title" id="docerias">Docerias</h1>
+    <div class="grid-container preview">
+      <div class="card">
+        <img src="doce1.jpg" alt="doceria 1" />
+        <div class="card-info">
+          <div class="rating">⭐ 5.00</div>
+          <h2 class="nome"> Docinhos da Vovó</h2>
+          <p class="descricao">Pizzaria aberta de segunda a sexta</p>
+          <button class="btn" onclick="irParaPerfil(35)">Conferir</button>
+        </div>
+      </div>
+    </div>
+    <div class="fade-overlay"></div>
+    <button class="show-more-btn" data-category="docerias">Ver todos</button>
+  </main>
+</div>
+      
+
+
+<div class="category-section" data-category="frutosdomar">
+  <main class="main-content" data-category="frutosdomar">
+    <h1 class="section-title" id="frutosdomar">Frutos do Mar</h1>
+    <div class="grid-container preview">
+      <div class="card">
+        <img src="mar1.jpeg" alt="fruto 1" />
+        <div class="card-info">
+          <div class="rating">⭐ 5.00</div>
+          <h2 class="nome"> Ostra & Vinho</h2>
+          <p class="descricao">Pizzaria aberta de segunda a sexta</p>
+          <button class="btn" onclick="irParaPerfil(47)">Conferir</button>
+        </div>
+      </div>
+    </div>
+    <div class="fade-overlay"></div>
+    <button class="show-more-btn" data-category="frutosdomar">Ver todos</button>
+  </main>
+</div>
+
+
+<div class="category-section" data-category="comidajaponesa">
+  <main class="main-content" data-category="comidajaponesa">
+    <h1 class="section-title" id="comidajaponesa">Comida Japonesa</h1>
+    <div class="grid-container preview">
+      
+      <div class="card">
+        <img src="japa1.jpg" alt="japonesa 1" />
+        <div class="card-info">
+          <div class="rating">⭐ 5.00</div>
+          <h2 class="nome"> Sakura</h2>
+          <p class="descricao">Pizzaria aberta de segunda a sexta</p>
+          <button class="btn" onclick="irParaPerfil(59)">Conferir</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="fade-overlay"></div>
+    <button class="show-more-btn" data-category="comidajaponesa">Ver todos</button>
+  </main>
+</div>
+      
+
+
+<div class="category-section" data-category="restaurantes">
+  <main class="main-content" data-category="restaurantes">
+    <h1 class="section-title" id="restaurantes">Restaurantes</h1>
+    <div class="grid-container preview">
+      
+      <div class="card">
+        <img src="restaurante1.jpg" alt="restaurante 1" />
+        <div class="card-info">
+          <div class="rating">⭐ 5.00</div>
+          <h2 class="nome"> Sal & Sabedoria</h2>
+          <p class="descricao">Pizzaria aberta de segunda a sexta</p>
+          <button class="btn" onclick="irParaPerfil(70)">Conferir</button>
+        </div>
+      </div>
+
+      
+
+      
+    </div>
+    <div class="fade-overlay"></div>
+    <button class="show-more-btn" data-category="restaurantes">Ver todos</button>
+  </main>
+</div>
+
+
+
+<div class="category-section" data-category="churrascarias">
+  <main class="main-content" data-category="churrascarias">
+    <h1 class="section-title" id="churrascarias">Churrascarias</h1>
+    <div class="grid-container preview">
+      <div class="card">
+        <img src="carne1.jpg" alt="churrascaria 1" />
+        <div class="card-info">
+          <div class="rating">⭐ 5.00</div>
+          <h2 class="nome">Churrasco & Cia </h2>
+          <p class="descricao">Pizzaria aberta de segunda a sexta</p>
+          <button class="btn" onclick="irParaPerfil(82)">Conferir</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="fade-overlay"></div>
+    <button class="show-more-btn" data-category="churrascarias">Ver todos</button>
+  </main>
+</div>
+ 
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section about-section">
+      <h3>Sobre Nós</h3>
+      <p>Oferecemos as melhores experiências gastronômicas com ingredientes frescos e sabores únicos.</p>
+      <div class="footer-social">
+        <a href="#" class="social-link">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://www.instagram.com/opalafood_p2?igsh=dGhrMjl6MzF6eHA2" class="social-link">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="social-link">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="footer-section contact-section">
+      <h3>Contato</h3>
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-phone contact-icon"></i>
+          <span>(86) 9999-999</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope contact-icon"></i>
+          <span>opalafoodp2@gmail.com</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <div class="footer-logo">
+      <img src="logo.png" alt="Logo OpalaFood">
+      <span>OpalaFood</span>
+    </div>
+    <p>&copy; 2025 OpalaFood. Todos os direitos reservados.</p>
+  </div>
+</footer>
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const categorySections = document.querySelectorAll('.category-section[data-category]');
+  const showMoreButtons = document.querySelectorAll('.show-more-btn');
+  
+  // Filter functionality
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const category = this.getAttribute('data-category');
+      
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      
+      categorySections.forEach(section => {
+        const gridContainer = section.querySelector('.grid-container');
+        
+        if (category === 'all') {
+          section.style.display = 'block';
+          section.classList.remove('expanded');
+          gridContainer.classList.remove('full');
+          gridContainer.classList.add('preview');
+        } else if (section.getAttribute('data-category') === category) {
+          section.style.display = 'block';
+          section.classList.add('expanded');
+          gridContainer.classList.remove('preview');
+          gridContainer.classList.add('full');
+        } else {
+          section.style.display = 'none';
+        }
+      });
+      
+      if (category !== 'all') {
+        const firstVisible = document.querySelector(`.category-section[data-category="${category}"]`);
+        if (firstVisible) {
+          firstVisible.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+  
+  // Show more functionality
+  showMoreButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const category = this.getAttribute('data-category');
+      const filterBtn = document.querySelector(`.filter-btn[data-category="${category}"]`);
+      
+      if (filterBtn) {
+        filterBtn.click();
+      }
+    });
+  });
+});
+
+
+// TELEFONES DOS ESTABELECIMENTOS
+const telefonesEstabelecimentos = {
+  1: "5586981872141",   // Pizzaria do Chiquin
+  2: "5585988888888",   // Marguerita & Cia
+  3: "5585977777777",   // Pizzaria do Tonhão
+  4: "5585966666666",   // Napoli Sabor
+  5: "5585955555555",   // Dona Maria Pizzas
+  6: "5585944444444",   // La Bella Pizza
+  7: "5585933333333",   // Pizzaria do Seu Zé
+  8: "5585922222222",   // Sabor na Brasa
+  9: "5585911111111",   // Pizza do Curral
+  10: "5585900000000",  // Massa & Magia
+  11: "5585899999999",  // Delícia Express
+  12: "5585888888888",  // Esquina do Sabor
+  // ... continue adicionando para todos os estabelecimentos até o ID 93
+};
+
+function irParaPerfil(id) {
+  window.location.href = `perfil-restaurante.html?id=${id}`;
+}
+
+  </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const socialLinks = document.querySelectorAll('.footer-social a, .social-links a');
+
+    socialLinks.forEach(link => {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const url = this.href;
+        const icone =
+        this.querySelector('i') ?
+        this.querySelector('i').classList.value
+        : '';
+
+       if (icone.includes('fa-whatsapp')) {
+          alert("O WhatsApp está indisponível no momento.");
+          return;
+        }
+        if (!url || url === '#') return;
+
+        const confirmacao = confirm("Você está prestes a sair do site OpalaFood e será redirecionado para outra página. Deseja continuar?");
+       
+        if (confirmacao) {
+          window.open(url, '_blank');
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

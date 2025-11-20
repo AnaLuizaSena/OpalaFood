@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cardápio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="cart-sync.js"></script>
+<script src="restaurantes-data.js"></script>
+  <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  background-color: white;
+    overflow-x: hidden;
+
+}
+
+header.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 4rem;
+  background: linear-gradient(135deg, #ffffff 0%, #fff8f0 50%, #fff4e6 100%);
+  position: relative;
+  z-index: 1000;
+  border-bottom: 2px solid rgba(249, 115, 22, 0.1);
+  box-shadow: 0 4px 25px rgba(249, 115, 22, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+header.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(249, 115, 22, 0.03) 25%, 
+    rgba(255, 168, 50, 0.03) 50%, 
+    rgba(249, 115, 22, 0.03) 75%, 
+    transparent 100%
+  );
+  z-index: -1;
+  animation: headerGlow 6s ease-in-out infinite;
+}
+
+@keyframes headerGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.logo {
+  position: relative;
+  padding: 8px;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.logo img {
+  width: 100px;
+  height: auto;
+  filter: drop-shadow(0 2px 8px rgba(249, 115, 22, 0.3));
+  transition: all 0.3s ease;
+}
+
+.center-menu {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.menu {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 4px 20px rgba(249, 115, 22, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 10px 18px;
+  border-radius: 25px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+.menu li a::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s ease;
+  z-index: -1;
+}
+
+.menu li a:hover::before {
+  width: 120%;
+  height: 150%;
+}
+
+.menu li a:hover {
+  font-weight: 600;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+}
+
+.menu li a.active {
+  color: white;
+  font-weight: 600;
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+}
+
+.menu li a.active::before {
+  width: 120%;
+  height: 150%;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  position: relative;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 15% 30%, rgba(249, 115, 22, 0.1) 2px, transparent 2px),
+    radial-gradient(circle at 85% 70%, rgba(255, 168, 50, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 45% 20%, rgba(249, 115, 22, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px, 40px 40px, 80px 80px;
+  animation: float 15s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(0.5deg); }
+}
+
+@media (max-width: 1024px) {
+  header.header {
+    padding: 1rem 2rem;
+  }
+  
+  .menu {
+    gap: 0.2rem;
+  }
+  
+  .menu li a {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  header.header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 8px;
+  }
+  
+  .menu li a {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu li a span {
+    display: none;
+  }
+  
+  .menu li a {
+    padding: 8px 10px;
+  }
+}
+
+.letra {
+  color: #f97316;
+  transform: 2s;
+}
+
+.letra:hover {
+  font-weight: bold;
+}
+
+/* Novos estilos */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-header {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 12px;
+  text-shadow: 2px 2px 4px rgba(249, 115, 22, 0.1);
+}
+
+.page-header p {
+  font-size: 1.1rem;
+  color: #6b7280;
+  max-width: 600px;
+  margin: 0 auto 30px;
+  line-height: 1.6;
+}
+
+.category-section {
+  margin: 50px 0;
+}
+
+.category-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #f97316;
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.category-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #f97316, #ffb347);
+  border-radius: 2px;
+}
+
+.pizza-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.pizza-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 25px rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: 350px;
+}
+
+.pizza-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f97316, #ffb347);
+}
+
+.pizza-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(249, 115, 22, 0.2);
+}
+
+.pizza-name-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f97316, #ffb347);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.pizza-name {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #1f2937;
+  line-height: 1.3;
+  padding-top: 10px;
+}
+
+.pizza-description {
+  font-size: 0.95rem;
+  text-align: center;
+  color: #6b7280;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.pizza-sizes {
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(249, 115, 22, 0.05);
+  border-radius: 12px;
+}
+
+.pizza-sizes h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.sizes-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.size-option {
+  text-align: center;
+  flex: 1;
+}
+
+.size-option .size-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4b5563;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.size-option .size-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f97316;
+}
+
+.order-btn {
+  background: linear-gradient(135deg, #f97316, #ff8c42);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: auto;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+}
+
+.order-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+  background: linear-gradient(135deg, #ff6b35, #ff4500);
+}
+
+.cta-section {
+  text-align: center;
+  margin: 60px 0 40px;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(255, 168, 50, 0.05));
+  border-radius: 25px;
+  border: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.cta-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 15px;
+}
+
+.cta-section p {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-bottom: 30px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-btn {
+  background: linear-gradient(135deg, #f97316, #ff8c42);
+  color: white;
+  border: none;
+  padding: 15px 35px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+  animation: softGlow 2s ease-in-out infinite;
+}
+
+.cta-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(249, 115, 22, 0.6);
+  background: linear-gradient(135deg, #ff6b35, #ff4500);
+}
+
+@keyframes softGlow {
+  0%, 100% { 
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+  }
+  50% { 
+    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.6);
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::-webkit-scrollbar{
+  width: 12px;
+  background-color: #fff6cc;
+}
+::-webkit-scrollbar-track{
+  border-radius: 3px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb{
+  border-radius: 5px;
+  background-color: #f3b94c;
+  border:2px solid #eff1f5
+}
+
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .pizza-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .sizes-list {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .size-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid rgba(249, 115, 22, 0.1);
+  }
+  
+  .cta-section h2 {
+    font-size: 1.6rem;
+  }
+}
+
+/* CARRINHO DE COMPRAS */
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid rgba(249, 115, 22, 0.2);
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.cart-icon:hover {
+  border-color: #f97316;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2);
+}
+
+.cart-icon i {
+  font-size: 20px;
+  color: #f97316;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #f97316;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+}
+
+
+.cart-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  width: 350px;
+  max-height: 500px;
+  overflow-y: auto;
+  display: none;
+  z-index: 10000;
+  border: 1px solid rgba(249, 115, 22, 0.1);
+  transform-origin: top right;
+}
+
+.cart-dropdown.show {
+  display: block;
+}
+
+.cart-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.close-cart {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.cart-items {
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.cart-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.cart-item-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(255, 168, 50, 0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(249, 115, 22, 0.2);
+}
+
+.cart-item-icon i {
+  font-size: 24px;
+  color: #f97316;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.cart-item-size {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.cart-item-price {
+  font-weight: 600;
+  color: #f97316;
+  font-size: 14px;
+}
+
+.cart-item-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.remove-item {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.quantity-btn {
+  background: white;
+  border: 1px solid #e0e0e0;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-btn:hover {
+  background: #f0f0f0;
+}
+
+.quantity-text {
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cart-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.cart-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cart-total-label {
+  color: #1f2937;
+}
+
+.cart-total-value {
+  color: #f97316;
+  font-size: 18px;
+}
+
+.cart-checkout-btn {
+  width: 100%;
+  padding: 12px;
+  background: #f97316;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cart-checkout-btn:hover {
+  background: #ea6a0f;
+}
+
+@media (max-width: 768px) {
+  .cart-dropdown {
+    width: 300px;
+    right: -20px;
+  }
+}
+
+/* MODAL DE CONFIRMAÇÃO */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.modal-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.modal-content {
+  margin: 24px 0;
+}
+
+.modal-info {
+  background: #f9fafb;
+  border-left: 4px solid #f97316;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.modal-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.modal-info-item:last-child {
+  border-bottom: none;
+}
+
+.modal-info-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.modal-info-value {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-btn-primary {
+  background: #f97316;
+  color: white;
+}
+
+.modal-btn-primary:hover {
+  background: #ea6a0f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.modal-btn-secondary {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.modal-btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* MODAL DE SUCESSO */
+.success-modal {
+  text-align: center;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  background: #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 32px;
+  color: white;
+}
+
+.success-message {
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 16px 0;
+}
+
+/* MODAL DE SELEÇÃO DE TAMANHO */
+.size-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+}
+
+.size-modal-overlay.show {
+  display: flex;
+}
+
+.size-modal-box {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.size-modal-header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.size-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.size-modal-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.size-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.size-option-btn {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.size-option-btn:hover {
+  border-color: #f97316;
+  background: #fff8f0;
+  transform: translateX(5px);
+}
+
+.size-option-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.size-option-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.size-option-desc {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.size-option-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f97316;
+}
+
+.size-modal-cancel {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 12px;
+}
+
+.size-modal-cancel:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+/* ASIDE DE PIZZAS MISTAS */
+.mixed-pizza-aside {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  background: linear-gradient(135deg, #ffffff 0%, #fff8f0 100%);
+  border: 2px solid rgba(249, 115, 22, 0.2);
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  padding: 15px 10px;
+  box-shadow: -4px 0 20px rgba(249, 115, 22, 0.15);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.mixed-pizza-aside:hover {
+  width: 90px;
+  box-shadow: -6px 0 25px rgba(249, 115, 22, 0.25);
+}
+
+.mixed-pizza-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2937;
+  text-align: center;
+  letter-spacing: 2px;
+  padding: 10px 0;
+}
+
+/* MODAL DE PIZZA MISTA */
+.mixed-pizza-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.mixed-pizza-modal.show {
+  display: flex;
+}
+
+.mixed-pizza-modal-box {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.mixed-modal-header {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(249, 115, 22, 0.1);
+}
+
+.mixed-modal-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.mixed-modal-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.mixed-step {
+  margin-bottom: 30px;
+}
+
+.mixed-step-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mixed-step-number {
+  background: #f97316;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.size-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.size-btn {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.size-btn:hover {
+  border-color: #f97316;
+  background: #fff8f0;
+}
+
+.size-btn.active {
+  border-color: #f97316;
+  background: #f97316;
+  color: white;
+}
+
+.size-btn-name {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.size-btn-desc {
+  display: block;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.flavor-count-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.flavor-count-btn {
+  padding: 12px 20px;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.flavor-count-btn:hover {
+  border-color: #f97316;
+  background: #fff8f0;
+}
+
+.flavor-count-btn.active {
+  border-color: #f97316;
+  background: #f97316;
+  color: white;
+}
+
+.flavor-selection-area {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 10px;
+  border: 2px dashed #e5e7eb;
+}
+
+.flavor-selection-info {
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+  padding: 20px;
+}
+
+.selected-flavors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.selected-flavor-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background: white;
+  border: 2px solid #f97316;
+  border-radius: 8px;
+}
+
+.selected-flavor-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.remove-flavor-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.available-flavors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.flavor-option-btn {
+  padding: 14px 18px;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.flavor-option-btn:hover {
+  border-color: #f97316;
+  background: #fff8f0;
+  transform: translateY(-2px);
+}
+
+.flavor-option-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f3f4f6;
+}
+
+.flavor-option-btn.disabled:hover {
+  border-color: #e5e7eb;
+  background: #f3f4f6;
+  transform: none;
+}
+
+.flavor-option-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2937;
+  flex: 1;
+}
+
+.mixed-price-info {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(255, 168, 50, 0.1));
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+  text-align: center;
+  border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+.mixed-price-label {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 5px;
+}
+
+.mixed-price-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #f97316;
+}
+
+.mixed-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.mixed-modal-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mixed-modal-btn-primary {
+  background: linear-gradient(135deg, #f97316, #ff8c42);
+  color: white;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+}
+
+.mixed-modal-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+}
+
+.mixed-modal-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.mixed-modal-btn-secondary {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.mixed-modal-btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+@media (max-width: 768px) {
+  .mixed-pizza-aside {
+    top: auto;
+    bottom: 20px;
+    transform: none;
+    width: 60px;
+    padding: 10px 8px;
+  }
+  
+  .mixed-pizza-modal-box {
+    width: 95%;
+    padding: 20px;
+    max-height: 90vh;
+  }
+  
+  .size-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .available-flavors-grid {
+    grid-template-columns: 1fr;
+  }
+}
+  </style>
+</head>
+<body>
+   <header class="header">
+  <div class="logo">
+    <img src="logo.png" alt="Logo">
+  </div>
+  
+  <nav class="center-menu">
+    <ul class="menu">
+      <li class="letra"><a href="opala1.html"> Inicial</a></li>
+      <li class="letra"><a href="categorias.html"> Menu</a></li>
+      <li class="letra"><a href="sobrenosversaonova.html"> Sobre nós</a></li>
+      <li class="letra"><a href="estabelecimentos.html" class="active"> Locais</a></li>
+      <li class="letra"><a href="contatenosnovissimo.html"> Contato</a></li>
+    </ul>
+  </nav>
+
+  <div class="header-actions">
+  <!-- ÍCONE DO CARRINHO -->
+  <div class="cart-icon" id="cartIcon">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="cart-count" id="cartCount">0</span>
+    
+    <!-- DROPDOWN DO CARRINHO -->
+    <div class="cart-dropdown" id="cartDropdown">
+      <div class="cart-header">
+        <h3>Meu Carrinho</h3>
+        <button class="close-cart" onclick="toggleCart()">×</button>
+      </div>
+      
+      <div class="cart-items" id="cartItems">
+        <div class="cart-empty">
+          Seu carrinho está vazio
+        </div>
+      </div>
+      
+      <div class="cart-footer" id="cartFooter" style="display: none;">
+        <div class="cart-total">
+          <span class="cart-total-label">Total:</span>
+          <span class="cart-total-value" id="cartTotal">R$ 0,00</span>
+        </div>
+        <button class="cart-checkout-btn" onclick="finalizarPedidosSeparados()">
+          Finalizar Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+<main class="main-content">
+  <div class="page-header">
+    <h1 id="nomeRestaurante">Nosso Cardápio</h1>
+    <p id="descricaoRestaurante">Descubra os sabores únicos das nossas pizzas artesanais, preparadas com ingredientes frescos e selecionados.</p>
+  </div>
+
+  <!-- Cardápio será carregado aqui dinamicamente -->
+  <div id="cardapioContainer"></div>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <h2>Pronto para fazer seu pedido?</h2>
+    <p>Agora que você já conhece todos os nossos sabores e preços, acesse nossa área de pedidos e monte sua pizza perfeita.</p>
+    <button class="cta-btn" onclick="irParaPedido()">
+      Fazer Pedido Agora
+    </button>
+  </section>
+
+  <!-- ASIDE DE PIZZA MISTA (será mostrado apenas se houver pizzas) -->
+<!-- ASIDE DE PIZZA MISTA (será mostrado apenas se houver pizzas) -->
+<aside class="mixed-pizza-aside" id="mixedPizzaAside" style="display: none;" onclick="openMixedPizzaModal()">
+  <div class="mixed-pizza-text">PIZZA MISTA</div>
+</aside>
+
+<!-- MODAL DE PIZZA MISTA -->
+<div class="mixed-pizza-modal" id="mixedPizzaModal">
+  <div class="mixed-pizza-modal-box">
+    <div class="mixed-modal-header">
+      <div class="mixed-modal-title">Monte sua Pizza Mista</div>
+      <div class="mixed-modal-subtitle">Escolha o tamanho, quantidade de sabores e combine seus favoritos</div>
+    </div>
+    
+    <!-- PASSO 1: Tamanho -->
+    <div class="mixed-step">
+      <div class="mixed-step-title">
+        <span class="mixed-step-number">1</span>
+        Escolha o tamanho
+      </div>
+      <div class="size-buttons" id="mixedSizeButtons">
+        <!-- Será preenchido dinamicamente -->
+      </div>
+    </div>
+    
+    <!-- PASSO 2: Quantidade de sabores -->
+    <div class="mixed-step">
+      <div class="mixed-step-title">
+        <span class="mixed-step-number">2</span>
+        Quantos sabores?
+      </div>
+      <div class="flavor-count-buttons" id="mixedFlavorCountButtons">
+        <!-- Será preenchido dinamicamente -->
+      </div>
+    </div>
+    
+    <!-- PASSO 3: Seleção de sabores -->
+    <div class="mixed-step" id="mixedFlavorSelectionStep" style="display: none;">
+      <div class="mixed-step-title">
+        <span class="mixed-step-number">3</span>
+        Selecione os sabores
+      </div>
+      
+      <div class="flavor-selection-area">
+        <div class="selected-flavors-list" id="selectedFlavorsList">
+          <!-- Sabores selecionados aparecerão aqui -->
+        </div>
+        
+        <div class="available-flavors-grid" id="availableFlavorsList">
+          <!-- Sabores disponíveis aparecerão aqui -->
+        </div>
+        
+        <div class="flavor-selection-info" id="flavorSelectionInfo">
+          Selecione o tamanho e a quantidade de sabores primeiro
+        </div>
+      </div>
+    </div>
+    
+    <!-- PREÇO -->
+    <div class="mixed-price-info" id="mixedPriceInfo" style="display: none;">
+      <div class="mixed-price-label">Preço total</div>
+      <div class="mixed-price-value" id="mixedPriceValue">R$ 0,00</div>
+    </div>
+    
+    <!-- AÇÕES -->
+    <div class="mixed-modal-actions">
+      <button class="mixed-modal-btn mixed-modal-btn-secondary" onclick="closeMixedPizzaModal()">
+        Cancelar
+      </button>
+      <button class="mixed-modal-btn mixed-modal-btn-primary" id="addMixedPizzaBtn" onclick="addMixedPizzaToCart()" disabled>
+        Adicionar ao Carrinho
+      </button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- MODAL DE SELEÇÃO DE TAMANHO -->
+<div class="size-modal-overlay" id="sizeModal">
+  <div class="size-modal-box">
+    <div class="size-modal-header">
+      <div class="size-modal-title" id="sizeModalPizzaName">Escolha o tamanho</div>
+      <div class="size-modal-subtitle">Selecione o tamanho da sua pizza</div>
+    </div>
+    
+    <div class="size-options" id="sizeOptions">
+      <!-- Opções serão inseridas aqui -->
+    </div>
+    
+    <button class="size-modal-cancel" onclick="closeSizeModal()">Cancelar</button>
+  </div>
+</div>
+
+<script>
+// BANCO DE DADOS DOS RESTAURANTES COM CARDÁPIOS
+const restaurantes = RESTAURANTES_DATA;
+
+// VARIÁVEIS GLOBAIS PARA PIZZA MISTA
+let mixedPizzaState = {
+  size: null,
+  sizePrice: 0,
+  finalPrice: 0,
+  flavorCount: 0,
+  selectedFlavors: [],
+  availableFlavors: []
+};
+
+function carregarCardapio() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = parseInt(urlParams.get('id'));
+
+  console.log('ID recebido:', id);
+  console.log('Restaurantes disponíveis:', Object.keys(restaurantes));
+  console.log('Restaurante encontrado:', restaurantes[id]);
+
+  if (!id || !restaurantes[id]) {
+    document.getElementById('nomeRestaurante').textContent = 'Restaurante não encontrado';
+    document.getElementById('descricaoRestaurante').textContent = 'O restaurante solicitado não está disponível. Verifique o ID na URL.';
+    return;
+  }
+
+  const rest = restaurantes[id];
+
+  // ATUALIZAR CABEÇALHO
+  document.getElementById('nomeRestaurante').textContent = rest.nome;
+  document.getElementById('descricaoRestaurante').textContent = rest.descricao || 'Confira nosso cardápio completo';
+
+  // ATUALIZAR TÍTULO DA PÁGINA
+  document.title = rest.nome + ' - Cardápio';
+
+  // RENDERIZAR CARDÁPIO
+  const container = document.getElementById('cardapioContainer');
+  container.innerHTML = '';
+
+  // Verificar se o restaurante tem cardápio
+  if (!rest.cardapio || Object.keys(rest.cardapio).length === 0) {
+    container.innerHTML = '<div style="text-align: center; padding: 40px; color: #6b7280;"><p>Cardápio em atualização. Por favor, entre em contato para mais informações.</p></div>';
+    return;
+  }
+
+  for (const [categoria, pizzas] of Object.entries(rest.cardapio)) {
+    const section = document.createElement('section');
+    section.className = 'category-section';
+
+    const title = document.createElement('h2');
+    title.className = 'category-title';
+    title.textContent = categoria;
+
+    const grid = document.createElement('div');
+    grid.className = 'pizza-grid';
+
+    pizzas.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'pizza-card';
+      
+      // Verificar se é pizza (tem 3 tamanhos) ou lanche (tem preço único)
+      const isPizza = item.pequena !== undefined && 
+                      item.media !== undefined && 
+                      item.grande !== undefined;
+      
+      const isLanche = item.preco !== undefined;
+      
+      if (isPizza) {
+        // RENDERIZAR COMO PIZZA
+        card.innerHTML = `
+          <div class="pizza-name-badge">Especialidade</div>
+          <h3 class="pizza-name">${item.nome}</h3>
+          <p class="pizza-description">${item.descricao || 'Delicioso item preparado com ingredientes frescos'}</p>
+          <div class="pizza-sizes">
+            <h4>Tamanhos e Preços</h4>
+            <div class="sizes-list">
+              <div class="size-option">
+                <span class="size-name">Pequena</span>
+                <span class="size-price">R$ ${item.pequena.toFixed(2)}</span>
+              </div>
+              <div class="size-option">
+                <span class="size-name">Média</span>
+                <span class="size-price">R$ ${item.media.toFixed(2)}</span>
+              </div>
+              <div class="size-option">
+                <span class="size-name">Grande</span>
+                <span class="size-price">R$ ${item.grande.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+          <button class="order-btn" onclick="selecionarPizza('${item.nome}', ${item.pequena}, ${item.media}, ${item.grande})">Pedir Agora</button>
+        `;
+      } else if (isLanche) {
+        // RENDERIZAR COMO LANCHE (preço único)
+        card.innerHTML = `
+          <div class="pizza-name-badge">Especialidade</div>
+          <h3 class="pizza-name">${item.nome}</h3>
+          <p class="pizza-description">${item.descricao || 'Delicioso lanche preparado com ingredientes frescos'}</p>
+          <div class="pizza-sizes">
+            <h4>Preço</h4>
+            <div class="sizes-list" style="justify-content: center;">
+              <div class="size-option">
+                <span class="size-price" style="font-size: 1.5rem;">R$ ${item.preco.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+          <button class="order-btn" onclick="adicionarLancheAoCarrinho('${item.nome}', ${item.preco})">Pedir Agora</button>
+        `;
+      } else {
+        // Se não tem estrutura de preços reconhecida
+        card.innerHTML = `
+          <div class="pizza-name-badge">Especialidade</div>
+          <h3 class="pizza-name">${item.nome}</h3>
+          <p class="pizza-description">${item.descricao || 'Delicioso item preparado com ingredientes frescos'}</p>
+          <div class="pizza-sizes">
+            <p style="text-align: center; color: #6b7280; padding: 20px;">
+              Entre em contato para consultar preços e disponibilidade
+            </p>
+          </div>
+        `;
+      }
+      
+      grid.appendChild(card);
+    });
+
+    section.appendChild(title);
+    section.appendChild(grid);
+    container.appendChild(section);
+  }
+
+  checkForPizzasAndShowAside();
+}
+
+let pizzaSelecionadaTemp = null;
+
+function selecionarPizza(nome, precoPequena, precoMedia, precoGrande) {
+  pizzaSelecionadaTemp = {
+    nome: nome,
+    precos: {
+      pequena: precoPequena,
+      media: precoMedia,
+      grande: precoGrande
+    }
+  };
+  
+  document.getElementById('sizeModalPizzaName').textContent = nome;
+  
+  const sizeOptions = document.getElementById('sizeOptions');
+  sizeOptions.innerHTML = `
+    <button class="size-option-btn" onclick="confirmarTamanho('pequena', ${precoPequena})">
+      <div class="size-option-info">
+        <span class="size-option-name">Pequena</span>
+        <span class="size-option-desc">6 fatias</span>
+      </div>
+      <span class="size-option-price">R$ ${precoPequena.toFixed(2)}</span>
+    </button>
+    
+    <button class="size-option-btn" onclick="confirmarTamanho('media', ${precoMedia})">
+      <div class="size-option-info">
+        <span class="size-option-name">Média</span>
+        <span class="size-option-desc">8 fatias</span>
+      </div>
+      <span class="size-option-price">R$ ${precoMedia.toFixed(2)}</span>
+    </button>
+    
+    <button class="size-option-btn" onclick="confirmarTamanho('grande', ${precoGrande})">
+      <div class="size-option-info">
+        <span class="size-option-name">Grande</span>
+        <span class="size-option-desc">12 fatias</span>
+      </div>
+      <span class="size-option-price">R$ ${precoGrande.toFixed(2)}</span>
+    </button>
+  `;
+  
+  document.getElementById('sizeModal').classList.add('show');
+}
+
+function confirmarTamanho(tamanho, preco) {
+  if (!pizzaSelecionadaTemp) return;
+  
+  const tamanhoTexto = tamanho.charAt(0).toUpperCase() + tamanho.slice(1);
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = parseInt(urlParams.get('id'));
+  const rest = restaurantes[id];
+  
+  adicionarAoCarrinho(
+  pizzaSelecionadaTemp.nome, 
+  tamanhoTexto, 
+  preco, 
+  id,
+  rest.nome,
+  rest.telefone
+);
+  
+  closeSizeModal();
+  
+  showToast('Item adicionado', pizzaSelecionadaTemp.nome + ' (' + tamanhoTexto + ') adicionada ao carrinho');
+  
+  pizzaSelecionadaTemp = null;
+}
+
+function closeSizeModal() {
+  document.getElementById('sizeModal').classList.remove('show');
+  pizzaSelecionadaTemp = null;
+}
+
+// VERIFICAR SE HÁ PIZZAS NO CARDÁPIO E MOSTRAR ASIDE
+// VERIFICAR SE HÁ PIZZAS NO CARDÁPIO E MOSTRAR ASIDE
+function checkForPizzasAndShowAside() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = parseInt(urlParams.get('id'));
+  
+  if (!id || !restaurantes[id]) {
+    return;
+  }
+  
+  const rest = restaurantes[id];
+  let hasPizzas = false;
+  let allPizzas = [];
+  
+  // Verificar se existe cardápio
+  if (!rest.cardapio) {
+    return;
+  }
+  
+  // Procurar por pizzas em todas as categorias
+  for (const [categoria, items] of Object.entries(rest.cardapio)) {
+    // Verificar se a categoria contém a palavra "pizza" (case insensitive)
+    const isPizzaCategory = categoria.toLowerCase().includes('pizza');
+    
+    if (isPizzaCategory && items && items.length > 0) {
+      hasPizzas = true;
+      // Adicionar apenas itens que têm os 3 tamanhos (pequena, media, grande)
+      items.forEach(item => {
+        if (item.pequena !== undefined && item.media !== undefined && item.grande !== undefined) {
+          allPizzas.push(item);
+        }
+      });
+    }
+  }
+  
+  // Se encontrou pizzas, mostrar o aside
+  if (hasPizzas && allPizzas.length > 0) {
+    const asideElement = document.getElementById('mixedPizzaAside');
+    if (asideElement) {
+      asideElement.style.display = 'block';
+    }
+    mixedPizzaState.availableFlavors = allPizzas;
+  }
+}
+
+// ABRIR MODAL DE PIZZA MISTA
+function openMixedPizzaModal() {
+  resetMixedPizzaState();
+  renderMixedSizeButtons();
+  renderFlavorCountButtons();
+  document.getElementById('mixedPizzaModal').classList.add('show');
+}
+
+// FECHAR MODAL DE PIZZA MISTA
+function closeMixedPizzaModal() {
+  document.getElementById('mixedPizzaModal').classList.remove('show');
+  resetMixedPizzaState();
+}
+
+// RESETAR ESTADO
+function resetMixedPizzaState() {
+  mixedPizzaState.size = null;
+  mixedPizzaState.sizePrice = 0;
+  mixedPizzaState.flavorCount = 0;
+  mixedPizzaState.selectedFlavors = [];
+  
+  // Limpar classes active
+  document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.flavor-count-btn').forEach(btn => btn.classList.remove('active'));
+  
+  updateMixedPizzaUI();
+}
+
+// RENDERIZAR BOTÕES DE TAMANHO
+function renderMixedSizeButtons() {
+  const container = document.getElementById('mixedSizeButtons');
+  container.innerHTML = `
+    <button class="size-btn" onclick="selectMixedSize('pequena', event)">
+      <span class="size-btn-name">Pequena</span>
+      <span class="size-btn-desc">6 fatias</span>
+    </button>
+    <button class="size-btn" onclick="selectMixedSize('media', event)">
+      <span class="size-btn-name">Média</span>
+      <span class="size-btn-desc">8 fatias</span>
+    </button>
+    <button class="size-btn" onclick="selectMixedSize('grande', event)">
+      <span class="size-btn-name">Grande</span>
+      <span class="size-btn-desc">12 fatias</span>
+    </button>
+  `;
+}
+
+// RENDERIZAR BOTÕES DE QUANTIDADE DE SABORES
+function renderFlavorCountButtons() {
+  const container = document.getElementById('mixedFlavorCountButtons');
+  container.innerHTML = `
+    <button class="flavor-count-btn" onclick="selectFlavorCount(2, event)">2 sabores</button>
+    <button class="flavor-count-btn" onclick="selectFlavorCount(3, event)">3 sabores</button>
+    <button class="flavor-count-btn" onclick="selectFlavorCount(4, event)">4 sabores</button>
+  `;
+}
+
+// SELECIONAR TAMANHO
+function selectMixedSize(size, event) {
+  mixedPizzaState.size = size;
+  
+  if (mixedPizzaState.availableFlavors.length > 0) {
+    const prices = mixedPizzaState.availableFlavors.map(p => p[size]);
+    mixedPizzaState.sizePrice = Math.max(...prices);
+  }
+  
+  document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.closest('.size-btn').classList.add('active');
+  
+  updateMixedPizzaUI();
+  renderFlavorSelection();
+}
+
+// SELECIONAR QUANTIDADE DE SABORES
+function selectFlavorCount(count, event) {
+  mixedPizzaState.flavorCount = count;
+  mixedPizzaState.selectedFlavors = [];
+  
+  document.querySelectorAll('.flavor-count-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  updateMixedPizzaUI();
+  renderFlavorSelection();
+}
+
+// RENDERIZAR SELEÇÃO DE SABORES
+function renderFlavorSelection() {
+  const step = document.getElementById('mixedFlavorSelectionStep');
+  const info = document.getElementById('flavorSelectionInfo');
+  const selectedList = document.getElementById('selectedFlavorsList');
+  const availableList = document.getElementById('availableFlavorsList');
+  
+  if (!mixedPizzaState.size || mixedPizzaState.flavorCount === 0) {
+    step.style.display = 'none';
+    return;
+  }
+  
+  step.style.display = 'block';
+  info.style.display = 'none';
+  
+  selectedList.innerHTML = '';
+  mixedPizzaState.selectedFlavors.forEach(flavor => {
+    const item = document.createElement('div');
+    item.className = 'selected-flavor-item';
+    item.innerHTML = `
+      <span class="selected-flavor-name">${flavor.nome}</span>
+      <button class="remove-flavor-btn" onclick="removeSelectedFlavor('${flavor.nome.replace(/'/g, "\\'")}')">×</button>
+    `;
+    selectedList.appendChild(item);
+  });
+  
+  availableList.innerHTML = '';
+  mixedPizzaState.availableFlavors.forEach(pizza => {
+    const isSelected = mixedPizzaState.selectedFlavors.some(f => f.nome === pizza.nome);
+    const isDisabled = mixedPizzaState.selectedFlavors.length >= mixedPizzaState.flavorCount && !isSelected;
+    
+    const btn = document.createElement('button');
+    btn.className = 'flavor-option-btn';
+    if (isDisabled) btn.classList.add('disabled');
+    btn.disabled = isDisabled;
+    btn.innerHTML = `
+  <span class="flavor-option-name">${pizza.nome}</span>
+`;
+    
+    if (!isDisabled) {
+      btn.onclick = () => selectFlavor(pizza);
+    }
+    
+    availableList.appendChild(btn);
+  });
+}
+
+// SELECIONAR SABOR
+function selectFlavor(pizza) {
+  if (mixedPizzaState.selectedFlavors.length < mixedPizzaState.flavorCount) {
+    mixedPizzaState.selectedFlavors.push(pizza);
+    renderFlavorSelection();
+    updateMixedPizzaUI();
+  }
+}
+
+// REMOVER SABOR SELECIONADO
+function removeSelectedFlavor(nome) {
+  mixedPizzaState.selectedFlavors = mixedPizzaState.selectedFlavors.filter(f => f.nome !== nome);
+  renderFlavorSelection();
+  updateMixedPizzaUI();
+}
+
+// ATUALIZAR UI GERAL
+function updateMixedPizzaUI() {
+  const priceInfo = document.getElementById('mixedPriceInfo');
+  const priceValue = document.getElementById('mixedPriceValue');
+  const addBtn = document.getElementById('addMixedPizzaBtn');
+  
+  if (mixedPizzaState.size && mixedPizzaState.sizePrice > 0) {
+    priceInfo.style.display = 'block';
+    
+    // Calcular preço com taxa (se existir)
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = parseInt(urlParams.get('id'));
+    const rest = restaurantes[id];
+    
+    let precoFinal = mixedPizzaState.sizePrice;
+    
+    // Verificar se tem taxa de pizza mista
+    if (rest.taxaPizzaMista && rest.taxaPizzaMista > 0) {
+      precoFinal += rest.taxaPizzaMista;
+      priceValue.innerHTML = `
+        <div style="font-size: 16px; color: #6b7280; margin-bottom: 5px;">
+          Pizza: R$ ${mixedPizzaState.sizePrice.toFixed(2)} + Taxa: R$ ${rest.taxaPizzaMista.toFixed(2)}
+        </div>
+        R$ ${precoFinal.toFixed(2)}
+      `;
+    } else {
+      priceValue.textContent = `R$ ${precoFinal.toFixed(2)}`;
+    }
+    
+    // Salvar o preço final para usar ao adicionar no carrinho
+    mixedPizzaState.finalPrice = precoFinal;
+  } else {
+    priceInfo.style.display = 'none';
+  }
+  
+  const isComplete = mixedPizzaState.size && 
+                     mixedPizzaState.flavorCount > 0 && 
+                     mixedPizzaState.selectedFlavors.length === mixedPizzaState.flavorCount;
+  
+  addBtn.disabled = !isComplete;
+}
+
+// ADICIONAR PIZZA MISTA AO CARRINHO
+function addMixedPizzaToCart() {
+  if (!mixedPizzaState.size || mixedPizzaState.selectedFlavors.length !== mixedPizzaState.flavorCount) {
+    return;
+  }
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = parseInt(urlParams.get('id'));
+  const rest = restaurantes[id];
+  
+  const sabores = mixedPizzaState.selectedFlavors.map(f => f.nome).join(', ');
+  const nomePizza = `Pizza Mista (${sabores})`;
+  const tamanhoTexto = mixedPizzaState.size.charAt(0).toUpperCase() + mixedPizzaState.size.slice(1);
+  
+  // Usar o preço final que já inclui a taxa (se houver)
+  const precoFinal = mixedPizzaState.finalPrice || mixedPizzaState.sizePrice;
+
+  adicionarAoCarrinho(
+    nomePizza,
+    tamanhoTexto,
+    precoFinal,
+    id,
+    rest.nome,
+    rest.telefone
+  );
+  
+  closeMixedPizzaModal();
+  showToast('Pizza Mista adicionada', nomePizza + ' (' + tamanhoTexto + ') adicionada ao carrinho');
+}
+
+// INICIALIZAR QUANDO A PÁGINA CARREGAR
+document.addEventListener('DOMContentLoaded', () => {
+  carregarCardapio();
+  checkForPizzasAndShowAside();
+  carregarCarrinho();
+});
+
+// Garantir que o aside apareça após o cardápio carregar
+window.addEventListener('load', () => {
+  checkForPizzasAndShowAside();
+});
+</script>
+</body>
+</html>
